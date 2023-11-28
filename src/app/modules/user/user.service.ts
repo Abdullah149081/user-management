@@ -1,8 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IUser } from "./user.interface";
 import { UserModel } from "./user.model";
 
 const createUser = async (userData: IUser) => {
-    const result = await UserModel.create(userData);
+    const { password, ...result } = (
+        await UserModel.create(userData)
+    ).toObject();
 
     return result;
 };
