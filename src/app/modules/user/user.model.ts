@@ -15,7 +15,6 @@ const userNameSchema = new Schema<IFullName>({
         maxlength: [20, "Name can not be more than 20 characters"],
     },
 });
-
 const userAddressSchema = new Schema<IAddress>({
     street: {
         type: String,
@@ -30,7 +29,6 @@ const userAddressSchema = new Schema<IAddress>({
         required: [true, "Country is required"],
     },
 });
-
 const userOrdersSchema = new Schema<IOrders>({
     productName: {
         type: String,
@@ -45,9 +43,7 @@ const userOrdersSchema = new Schema<IOrders>({
         required: [true, "Quantity is required"],
     },
 });
-
 // user management Schema
-
 const userSchema = new Schema<IUser>({
     userId: {
         type: Number,
@@ -93,5 +89,4 @@ const userSchema = new Schema<IUser>({
     },
     orders: [userOrdersSchema],
 });
-
 export const UserModel = model<IUser>("User", userSchema);
