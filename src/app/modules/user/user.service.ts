@@ -24,7 +24,15 @@ const getAllUser = async () => {
     return result;
 };
 
+const getSingleUser = async (userId: number) => {
+    const result = await User.findOne({ userId }).select({
+        password: 0,
+    });
+    return result;
+};
+
 export const userService = {
     createUser,
     getAllUser,
+    getSingleUser,
 };
