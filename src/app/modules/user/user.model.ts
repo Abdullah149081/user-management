@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Query, Schema, model } from "mongoose";
 import {
     IAddress,
     IFullName,
@@ -94,6 +94,12 @@ const userSchema = new Schema<IUser, UserModel>({
         required: [true, "Address is required"],
     },
     orders: [userOrdersSchema],
+});
+
+// work fine all method and give only isActive: "true"
+userSchema.pre(/^find/, function (this: Query<IUser, Document>, next) {
+    this.find({ isActive: { $ne: false } });
+    next();
 });
 
 // checking  user already DB exists

@@ -25,6 +25,10 @@ const getAllUser = async () => {
 };
 
 const getSingleUser = async (userId: number) => {
+    if (!(await User.isUserExists(userId))) {
+        throw new Error("User not found");
+    }
+
     const result = await User.findOne({ userId }).select({
         password: 0,
     });
@@ -47,9 +51,18 @@ const updateUser = async (userId: number, userData: IUser) => {
     return result;
 };
 
+const deleteUser = async (userId: number) => {
+    if (!(await User.isUserExists(userId))) {
+        throw new Error("Delete operation aborted");
+    }
+    const result = await User.updateOne({ userId }, { isActive: false });
+    return result;
+};
+
 export const userService = {
     createUser,
     getAllUser,
     getSingleUser,
     updateUser,
+    deleteUser,
 };
