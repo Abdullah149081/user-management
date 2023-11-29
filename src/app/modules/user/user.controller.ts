@@ -67,8 +67,36 @@ const getSingleUser = async (req: Request, res: Response) => {
     }
 };
 
+const updateUser = async (req: Request, res: Response) => {
+    try {
+        const { userId } = req.params;
+        const userData = req.body;
+        const zodParseData = userValidSchema.parse(userData);
+
+        const result = await userService.updateUser(
+            parseFloat(userId),
+            zodParseData,
+        );
+        res.status(200).json({
+            status: "success",
+            message: "User updated successfully",
+            data: result,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message || "Something went wrong",
+            error: {
+                code: 404,
+                description: "User not found!",
+            },
+        });
+    }
+};
+
 export const userController = {
     createUser,
     getAllUsers,
     getSingleUser,
+    updateUser,
 };

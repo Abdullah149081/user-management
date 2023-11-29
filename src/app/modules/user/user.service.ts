@@ -31,8 +31,25 @@ const getSingleUser = async (userId: number) => {
     return result;
 };
 
+const updateUser = async (userId: number, userData: IUser) => {
+    if (!(await User.isUserExists(userId))) {
+        throw new Error("Update operation aborted");
+    }
+
+    const result = await User.findOneAndUpdate(
+        { userId },
+        { $set: userData },
+        { new: true },
+    ).select({
+        password: 0,
+    });
+
+    return result;
+};
+
 export const userService = {
     createUser,
     getAllUser,
     getSingleUser,
+    updateUser,
 };
