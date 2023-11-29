@@ -33,3 +33,9 @@ To format code:
 npm run prettier:fix
 ```
 
+## Database credentials in the .env file.
+```
+PORT=
+DB_URL=
+BCRYPT_SALT_ROUNDS=
+```
