@@ -1,4 +1,6 @@
+import bcrypt from "bcrypt";
 import { Query, Schema, model } from "mongoose";
+import config from "../../config";
 import {
     IAddress,
     IFullName,
@@ -94,6 +96,15 @@ const userSchema = new Schema<IUser, UserModel>({
         required: [true, "Address is required"],
     },
     orders: [userOrdersSchema],
+});
+
+// encrypted password
+userSchema.pre("save", async function (next) {
+    this.password = await bcrypt.hash(
+        this.password,
+        Number(config.bcrypt_salt_rounds),
+    );
+    next();
 });
 
 // work fine all method and give only isActive: "true"
