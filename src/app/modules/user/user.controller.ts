@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { userService } from "./user.service";
 import userValidSchema from "./user.validation";
@@ -14,10 +15,10 @@ const createUser = async (req: Request, res: Response) => {
             message: "User created successfully!",
             data: result,
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({
             success: false,
-            message: "something went wrong",
+            message: error.message || "something went wrong",
             err: error,
         });
     }
