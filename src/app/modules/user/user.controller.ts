@@ -56,10 +56,10 @@ const getSingleUser = async (req: Request, res: Response) => {
             message: "User fetched successfully!",
             data: result,
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(404).json({
             success: false,
-            messages: "user not found!",
+            message: error.message || "user not found!",
             error: {
                 code: 404,
                 description: "user not found",
@@ -141,6 +141,29 @@ const addOrderUser = async (req: Request, res: Response) => {
     }
 };
 
+const getUserOrders = async (req: Request, res: Response) => {
+    try {
+        const { userId } = req.params;
+
+        const result = await userService.getUserOrders(parseFloat(userId));
+
+        res.status(200).json({
+            success: true,
+            message: "Order fetched successfully!",
+            data: result,
+        });
+    } catch (error: any) {
+        res.status(404).json({
+            success: false,
+            message: error.message || "user not found!",
+            error: {
+                code: 404,
+                description: "user not found",
+            },
+        });
+    }
+};
+
 export const userController = {
     createUser,
     getAllUsers,
@@ -148,4 +171,5 @@ export const userController = {
     updateUser,
     deleteUser,
     addOrderUser,
+    getUserOrders,
 };

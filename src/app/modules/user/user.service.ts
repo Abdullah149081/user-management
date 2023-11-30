@@ -26,7 +26,7 @@ const getAllUser = async () => {
 
 const getSingleUser = async (userId: number) => {
     if (!(await User.isUserExists(userId))) {
-        throw new Error("User not found");
+        throw new Error("User Id Wrong");
     }
 
     const result = await User.findOne({ userId }).select({
@@ -72,6 +72,17 @@ const addOrderUser = async (userId: number, orderData: IOrders) => {
     return result;
 };
 
+const getUserOrders = async (userId: number) => {
+    if (!(await User.isUserExists(userId))) {
+        throw new Error("User Id wrong");
+    }
+
+    const result = await User.findOne({ userId }).select({
+        orders: 1,
+    });
+    return result;
+};
+
 export const userService = {
     createUser,
     getAllUser,
@@ -79,4 +90,5 @@ export const userService = {
     updateUser,
     deleteUser,
     addOrderUser,
+    getUserOrders,
 };
