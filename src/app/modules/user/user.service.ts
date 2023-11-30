@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IUser } from "./user.interface";
+import { IOrders, IUser } from "./user.interface";
 import { User } from "./user.model";
 
 const createUser = async (userData: IUser) => {
@@ -59,10 +59,24 @@ const deleteUser = async (userId: number) => {
     return result;
 };
 
+const addOrderUser = async (userId: number, orderData: IOrders) => {
+    if (!(await User.isUserExists(userId))) {
+        throw new Error("Order insert operation aborted");
+    }
+
+    const result = await User.findOneAndUpdate(
+        { userId },
+        { $push: { orders: orderData } },
+        { new: true },
+    );
+    return result;
+};
+
 export const userService = {
     createUser,
     getAllUser,
     getSingleUser,
     updateUser,
     deleteUser,
+    addOrderUser,
 };

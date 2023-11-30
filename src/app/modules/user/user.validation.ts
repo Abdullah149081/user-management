@@ -17,7 +17,7 @@ const addressSchema = z.object({
     country: z.string().min(1, { message: "Country is required" }),
 });
 
-const ordersSchema = z.object({
+export const ordersSchema = z.object({
     productName: z.string().min(1, { message: "Product name is required" }),
     price: z
         .number()

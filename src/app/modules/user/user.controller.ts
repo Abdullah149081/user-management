@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
+import { IOrders, IUser } from "./user.interface";
 import { userService } from "./user.service";
-import userValidSchema from "./user.validation";
+import userValidSchema, { ordersSchema } from "./user.validation";
 
 const createUser = async (req: Request, res: Response) => {
     try {
@@ -70,7 +71,7 @@ const getSingleUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
     try {
         const { userId } = req.params;
-        const userData = req.body;
+        const userData: IUser = req.body;
         const zodParseData = userValidSchema.parse(userData);
 
         const result = await userService.updateUser(
@@ -117,10 +118,34 @@ const deleteUser = async (req: Request, res: Response) => {
     }
 };
 
+const addOrderUser = async (req: Request, res: Response) => {
+    try {
+        const { userId } = req.params;
+        const orderData: IOrders = req.body;
+        const zodParseData = ordersSchema.parse(orderData);
+        await userService.addOrderUser(parseFloat(userId), zodParseData);
+        res.status(200).json({
+            status: "success",
+            message: "Order created successfully!",
+            data: null,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message || "Something went wrong",
+            error: {
+                code: 404,
+                description: "User not found!",
+            },
+        });
+    }
+};
+
 export const userController = {
     createUser,
     getAllUsers,
     getSingleUser,
     updateUser,
     deleteUser,
+    addOrderUser,
 };
